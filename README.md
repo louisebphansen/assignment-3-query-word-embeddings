@@ -22,7 +22,6 @@ Write a script which does the following:
 
 | <div style="width:120px"></div>| Description |
 |---------|:-----------|
-|```in```| This is were the Spotify Dataset should be placed after downloading.|
 | ```out``` | Contains the output txt files with results from the query search.|
 | ```src```  | Contains the Python script for performing the query expansion on a desired artist and search term. |
 | ```run.sh```    | Bash script for running the code. |
@@ -65,7 +64,9 @@ bash setup.sh
 This will create a virtual environment in the directory (```env```) and install the required packages to run the code.
 
 #### Download data
-Download the dataset from Kaggle [(link)](https://www.kaggle.com/datasets/joebeachcapital/57651-spotify-songs?resource=download) and unzip it. Place the file *Spotify Million Song Dataset_exported.csv* in the ```in``` folder of this repository. 
+Download the dataset from Kaggle [(link)](https://www.kaggle.com/datasets/joebeachcapital/57651-spotify-songs?resource=download) and unzip it. 
+
+Create a new folder in the main directory called ```in``` and place the csv file here. 
 
 #### Run code
 
@@ -78,7 +79,7 @@ To run the code in this repo with predefined/default arguments, run:
 bash run.sh
 ```
 
-This will activate the virtual environment and run the ```src/song_search.py`` with default arguments (artist: ABBA, search term: love). The output from this can be found in the 'out' folder.
+This will activate the virtual environment and run the ```src/song_search.py``` with default arguments (artist: ABBA, search term: love). The output from this can be found in the 'out' folder.
 
 ##### Define arguments yourself
 
