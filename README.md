@@ -22,14 +22,14 @@ Write a script which does the following:
 
 | <div style="width:120px"></div>| Description |
 |---------|:-----------|
-| ```out``` | Contains the output txt files with results from the query search.|
+| ```out``` | Contains the output txt files with results from the query expansion search.|
 | ```src```  | Contains the Python script for performing the query expansion on a desired artist and search term. |
-| ```run.sh```    | Bash script for running the code. |
+| ```run.sh```    | Bash script for running the code with default arguments. |
 | ```setup.sh```  | Bash script for setting up virtual environment. |
-| ```requirements.txt```  | Packages required to run the code|
+| ```requirements.txt```  | Packages required to run the code. |
 
 ### Methods
-This repository contains the code to perform a search on words related to a given search term in a given artist's songs. More specifically, the ```src/song_search.py``` script finds the 10 most similar words to a given search term based on cosine similarities of word embeddings calculated by the *"glove-wiki-gigaword-50"* model. The chosen search term and the 10 most similar words are then used in a word search in each of the artist's song. The script outputs a txt file containing the percentage amount of songs by the artist containing the search term and words related to it. 
+This repository contains the code to perform a search on words related to a given search term in a given artist's songs. More specifically, the ```src/song_search.py``` script finds the 10 most similar words to a given search term based on cosine similarities of word embeddings calculated using the ```gensim``` package and the *"glove-wiki-gigaword-50"* model. The chosen search term and the 10 most similar words are then used in a word search in each of the artist's song. The script outputs a txt file containing the percentage amount of songs by the artist containing the search term and words related to it. 
 
 ### Data
 The project uses a dataset of 57,650 songs and their lyrics.
@@ -79,7 +79,7 @@ To run the code in this repo with predefined/default arguments, run:
 bash run.sh
 ```
 
-This will activate the virtual environment and run the ```src/song_search.py``` with default arguments (artist: ABBA, search term: love). The output from this can be found in the 'out' folder.
+This will activate the virtual environment and run the ```src/song_search.py``` with default arguments (artist: ABBA, search term: love). The output from this can be found in the ```out``` folder.
 
 ##### Define arguments yourself
 
@@ -87,7 +87,7 @@ Alternatively, the script can be run with different arguments:
 
 ```
 # activate the virtual environment
-source env/bin/activate
+source ./env/bin/activate
 
 python3 src/song_search.py --artist <artist> --search_term <search_term>
 
