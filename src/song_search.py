@@ -1,3 +1,9 @@
+'''
+This script performs a word search on words related to (as defined by cosine similarities of word embeddings) a given search term on a given artist's songs.
+The output of the search can be found as a txt file in the 'out' folder.
+'''
+
+# import modules
 import gensim
 import gensim.downloader as api
 import os
@@ -22,6 +28,16 @@ def argument_parser():
 # define preprocessing function
 def preprocess(text_column): 
 
+    '''
+    Function to preprocess a column of text.
+
+    Arguments:
+    - text_column: column or list containing strings to preprocess.
+
+    Returns:
+        List of cleaned and preprocessed texts
+    '''
+
     # initialize empty list
     cleaned_texts = []
 
@@ -43,6 +59,17 @@ def preprocess(text_column):
 
 def filter_and_clean(df, artist):
 
+    '''
+    Function that takes a given dataframe, filters it based on a chosen artist and preprocesses it.
+
+    Arguments:
+    - df: Pandas dataframe containing songs by different artists (i.e., containing a column called 'artist')
+    - artist: what artist to filter the dataframe by
+
+    Returns:
+    - Filtered and preprocessed pandas dataframe containing only songs by the chosen artist
+    '''
+
     # create new df with only the chosen artist
     artist_df = df[(df['artist'] == artist)]
 
@@ -61,6 +88,16 @@ def filter_and_clean(df, artist):
         return artist_df
 
 def find_word_matches(song, similar_words):
+    '''
+    Find exact word matches from a list of similar words to a chosen search term.
+
+    Arguments:
+        - song: song to search for word matches in
+        - similar_words: list of words to search for in the song
+    
+    Returns:
+        A count of how many of the words are present in the song.
+    '''
 
     # initialize empty word count variable
     word_count = 0
@@ -76,13 +113,25 @@ def find_word_matches(song, similar_words):
     
     return word_count
 
-def calc_percentages(model, search_term, text_column):
+def calc_percentages(model, search_term, cleaned_text_column):
 
+    '''
+    Function to calculate how many percentage of songs contain words related to the search term.
+
+    Arguments:
+        - model: loaded model from gensim to use for word embeddings
+        - search_term: search word to find similar words to
+        - cleaned_text_column: column in a pandas dataframe containing preprocessed text to apply word search to
+
+    Returns:
+        Percentage (as decimal number) of songs containing words related to the chosen search term
+
+    '''
     # find the 10 most similar words to the search term
     try:
         similar_words = model.most_similar(search_term, topn=10)
     
-    # if the search term is not available in the chosen model, exit the script
+    # if the search term is not available in the chosen model's vocabulary, exit the script
     except:
         print("Error: Search term is not available in the chosen model. Try another one.")
         sys.exit()
@@ -97,7 +146,7 @@ def calc_percentages(model, search_term, text_column):
     texts_w_words = 0
 
     # loop over each song in the text column
-    for song in text_column:
+    for song in cleaned_text_column:
 
         # find matches for the similar words
         count = find_word_matches(song, similar_words_tolist)
@@ -115,6 +164,18 @@ def calc_percentages(model, search_term, text_column):
     return percentage
 
 def save_result(percentage, artist, search_term):
+
+    '''
+    Save results from expanded word query to a txt file in the 'out' folder.
+
+    Arguments:
+        - percentage: amount of songs containing words related to the search word
+        - artist: artist that has been used for the search
+        - search_term: original search term that has been searched for
+    
+    Returns:
+        None
+    '''
 
     # round decimal number and convert to percentage
     percentage_calc = round(percentage, 2) * 100
@@ -134,6 +195,20 @@ def save_result(percentage, artist, search_term):
 
 def query_search(df, artist, model, search_term):
 
+    '''
+    Perform expanded query search on a given artist and search term.
+    Results are saved in the 'out' folder.
+
+    Arguments:
+        - df: pandas df containing song lyrics data with 'artist' and 'text' columns
+        - artist: chosen artist
+        - model: gensim model to use for word embeddings
+        - search_term: chosen search term to find similar words to and search for in songs
+    
+    Returns
+        None
+    '''
+
     # create df with only the searched for artist
     artist_df = filter_and_clean(df, artist)
 
@@ -148,10 +223,10 @@ def main():
     # load args
     args = argument_parser()
     
-    # load glove model
+    # load glove model from gensim
     model = api.load("glove-wiki-gigaword-50")
 
-    # define path to Spotify data an load to pandas df
+    # define path to Spotify data and load to pandas df
     in_path = os.path.join('in', 'Spotify Million Song Dataset_exported.csv')
     df = pd.read_csv(in_path)
 
