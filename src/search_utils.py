@@ -1,3 +1,12 @@
+'''
+LANGUAGE ANALYTICS @ AARHUS UNIVERSITY, ASSIGNMENT 3: Expanded query search with word embeddings
+
+AUTHOR: Louise Brix Pilegaard Hansen
+
+DESCRIPTION:
+This script contains utils fuctions to perform an expanded query search using word embeddings
+'''
+
 # import modules
 import gensim
 import gensim.downloader as api
@@ -9,7 +18,7 @@ import argparse
 import sys
 
 # define preprocessing function
-def preprocess(text_column): 
+def preprocess(text_column: pd.Series) -> list: 
 
     '''
     Function to preprocess a column of text.
@@ -40,7 +49,7 @@ def preprocess(text_column):
     
     return cleaned_texts
 
-def filter_and_clean(df, artist):
+def filter_and_clean(df: pd.DataFrame, artist: str) -> pd.DataFrame:
 
     '''
     Function that takes a given dataframe, filters it based on a chosen artist and preprocesses it.
@@ -70,7 +79,7 @@ def filter_and_clean(df, artist):
 
         return artist_df
 
-def find_word_matches(song, similar_words):
+def find_word_matches(song: str, similar_words:list) -> float:
     '''
     Find exact word matches from a list of similar words to a chosen search term.
 
@@ -96,7 +105,7 @@ def find_word_matches(song, similar_words):
     
     return word_count
 
-def calc_percentages(model, search_term, cleaned_text_column):
+def calc_percentages(model, search_term: str, cleaned_text_column: pd.Series) -> float:
 
     '''
     Function to calculate how many percentage of songs contain words related to the search term.
@@ -146,8 +155,7 @@ def calc_percentages(model, search_term, cleaned_text_column):
 
     return percentage
 
-def save_result(percentage, artist, search_term):
-
+def save_result(percentage: float, artist: str, search_term: str):
     '''
     Save results from expanded word query to a txt file in the 'out' folder.
 

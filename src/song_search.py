@@ -31,7 +31,7 @@ from search_utils import save_result # save results from expanded word query
 tracker = EmissionsTracker(project_name="assignment3_subtasks",
                            experiment_id="song_search",
                            output_dir='emissions',
-                           output_file="assignment3_subtasks.csv")
+                           output_file="assignment3_subtasks_emissions.csv")
 
 
 # define argument parser
@@ -46,21 +46,33 @@ def argument_parser():
     
     return args
 
-def query_search(df, artist, model, search_term):
+def query_search(artist: str, search_term: str):
 
     '''
     Perform expanded query search on a given artist and search term.
     Results are saved in the 'out' folder.
 
     Arguments:
-        - df: pandas df containing song lyrics data with 'artist' and 'text' columns
         - artist: chosen artist
-        - model: gensim model to use for word embeddings
         - search_term: chosen search term to find similar words to and search for in songs
     
     Returns
         None
     '''
+
+    # track model and data loading
+    tracker.start_task('Load GLOVE embedding model')
+
+    # load glove model from gensim
+    model = api.load("glove-wiki-gigaword-50")
+
+    # stop tracking
+    loading_emissions = tracker.stop_task()
+    tracker.stop()
+
+    # define path to Spotify data and load to pandas df
+    in_path = os.path.join('in', 'Spotify Million Song Dataset_exported.csv')
+    df = pd.read_csv(in_path)
 
     # track preprocessing task
     tracker.start_task('Filter df and preprocess text')
@@ -77,40 +89,28 @@ def query_search(df, artist, model, search_term):
     # find percentage of songs containing words similar to or the search term
     result = calc_percentages(model, search_term, artist_df['cleaned_text'])
 
-    # stop tracking
+    # stop tracking of task
     search_emissions = tracker.stop_task()
 
     # save txt file with result
     save_result(result, artist, search_term)
 
+    # stop all tracking
     tracker.stop()
 
 # create new tracker using a decorator to track emissions for running the entire script
-@track_emissions(project_name="assignment3_full",
-                experiment_id="assignment3_full",
+@track_emissions(project_name="assignment3_FULL",
+                experiment_id="assignment3_FULL",
                 output_dir='emissions',
-                output_file="emissions_assignment3_FULL.csv")
-def main():
+                output_file="assignment3_FULL_emissions.csv")
 
+def main():
+    
     # load args
     args = argument_parser()
     
-    # track model and data loading
-    tracker.start_task('Load GLOVE embedding model')
-
-    # load glove model from gensim
-    model = api.load("glove-wiki-gigaword-50")
-
-    # stop tracking
-    loading_emissions = tracker.stop_task()
-    tracker.stop()
-
-    # define path to Spotify data and load to pandas df
-    in_path = os.path.join('in', 'Spotify Million Song Dataset_exported.csv')
-    df = pd.read_csv(in_path)
-    
     # perform expanded query search on the desired artist and search term
-    query_search(df, args['artist'], model, args['search_term'])
+    query_search(args['artist'], args['search_term'])
 
 if __name__ == '__main__':
    main()
