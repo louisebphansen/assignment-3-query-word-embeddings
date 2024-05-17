@@ -22,21 +22,22 @@ Write a script which does the following:
 
 | <div style="width:120px"></div>| Description |
 |---------|:-----------|
-| ```out``` | Contains the output txt files with results from the query expansion search.|
-| ```src```  | Contains the Python script for performing the query expansion on a desired artist and search term. |
-| ```run.sh```    | Bash script for running the code with default arguments. |
-| ```setup.sh```  | Bash script for setting up virtual environment. |
-| ```requirements.txt```  | Packages required to run the code. |
+| ```out``` | Contains the output txt files with results from the expanded query search|
+| ```src```  | Contains the Python script for performing the query expansion on a desired artist and search term |
+| ```run.sh```    | Bash script for running the code with default arguments |
+| ```setup.sh```  | Bash script for setting up virtual environment |
+| ```requirements.txt```  | Packages required to run the code |
+|```emissions```| Contains csv files with information about how much carbon is emitted when running the code, which is used for [Assignment 5](https://github.com/louisebphansen/assignment-5-evaluating-environmental-impact-louisebphansen)|
 
 ### Methods
-This repository contains the code to perform a search on words related to a given search term in a given artist's songs. More specifically, the ```src/song_search.py``` script finds the 10 most similar words to a given search term based on cosine similarities of word embeddings calculated using the ```gensim``` package and the *"glove-wiki-gigaword-50"* model. The chosen search term and the 10 most similar words are then used in a word search in each of the artist's song. The script outputs a txt file containing the percentage amount of songs by the artist containing the search term and words related to it. 
+This repository contains the code to perform an expanded query search using a chosen search term on a chosen artist's songs. More specifically, the ```src/song_search.py``` script uses util functions defined in ```src/song_search.py``` to find the 10 most similar words to a given search term based on cosine similarities of word embeddings calculated using the ```gensim``` package and the *"glove-wiki-gigaword-50"* model. The chosen search term and the 10 most similar words are then used in a word search in each of the artist's song. The script outputs a txt file containing the percentage amount of songs by the artist containing the search term and words related to it. 
 
 ### Data
-The project uses a dataset of 57,650 songs and their lyrics.
+The project uses a dataset, *'Spotify Million Song Dataset_exported.csv'*, of 57,650 lyrics of songs from different artists. See more [here](https://www.kaggle.com/datasets/joebeachcapital/57651-spotify-songs).
 
 ### Usage
 
-All code for this assignment was designed to run on an Ubuntu 22.04 operating system using Python version 3.10.12. It is therefore not guaranteed that it will work on other operating systems.
+All code for this assignment was designed to run on an Ubuntu 24.04 operating system using Python version 3.12.2. It is therefore not guaranteed that it will work on other operating systems.
 
 It is important that you run all code from the main folder, i.e., *assignment-3-query-word-embeddings-louisebphansen*. Your terminal should look like this:
 
@@ -66,7 +67,7 @@ This will create a virtual environment in the directory (```env```) and install 
 #### Download data
 Download the dataset from Kaggle [(link)](https://www.kaggle.com/datasets/joebeachcapital/57651-spotify-songs?resource=download) and unzip it. 
 
-Create a new folder in the main directory called ```in``` and place the csv file here. 
+Create a new folder in the main directory called ```in``` and place the *'Spotify Million Song Dataset_exported.csv'* file here. 
 
 #### Run code
 
@@ -103,3 +104,9 @@ python3 src/song_search.py --artist <artist> --search_term <search_term>
 An example of an output txt file can be found in ```out```. When searching for 'ABBA' and 'love', this is the result:
 
 ***94.0% of ABBA's songs contain words related to 'love'***
+
+### Discussion
+
+
+### A note on carbon emissions
+
