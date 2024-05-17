@@ -106,6 +106,21 @@ An example of an output txt file can be found in ```out```. When searching for '
 ***94.0% of ABBA's songs contain words related to 'love'***
 
 ### Discussion
+In order to examine the results the code in this repository produce, I have used five common themes in popular music (as found in [this paper](https://journals.sagepub.com/doi/full/10.1177/0305735617748205)) as search terms for an expanded query search of ABBA's songs:
+
+- 94.0% of ABBA's songs contain words related to 'love'
+
+- 24.0% of ABBA's songs contain words related to 'desire'
+
+- 15.0% of ABBA's songs contain words related to 'music'
+
+- 15.0% of ABBA's songs contain words related to 'dancing'
+
+- 2.0% of ABBA's songs contain words related to 'identity'
+
+These results 
+
+#### Limitations
 
 
 ### A note on carbon emissions
