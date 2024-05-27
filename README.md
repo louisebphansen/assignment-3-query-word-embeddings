@@ -10,7 +10,7 @@ All code was created by me, but code provided in the notebooks for the course ha
 Write a script which does the following:
 
 - Loads the song lyric data
-- Downloads/loads a word embedding model via ```gensim``` (see below)
+- Downloads/loads a word embedding model via ```gensim```
 - Takes a given word as an input and finds the most similar words via word embeddings
 - Find how many songs for a given artist feature terms from the expanded query
 - Calculate the percentage of that artist's songs featuring those terms
@@ -30,10 +30,10 @@ Write a script which does the following:
 |```emissions```| Contains csv files with information about how much carbon is emitted when running the code, which is used for [Assignment 5](https://github.com/louisebphansen/assignment-5-evaluating-environmental-impact-louisebphansen)|
 
 ### Methods
-This repository contains the code to perform an expanded query search using a chosen search term on a chosen artist's songs. More specifically, the ```src/song_search.py``` script uses util functions defined in ```src/search_utils.py``` to find the 10 most similar words to a given search term based on cosine similarities of word embeddings calculated using the ```gensim``` package and the *"glove-wiki-gigaword-50"* model. The chosen search term and the 10 most similar words are then used in a word search in each of the artist's song. The script outputs a txt file containing the percentage amount of songs by the artist containing the search term and words related to it. 
+This repository contains the code to perform an expanded query search using a chosen search term on a chosen artist's songs. More specifically, the ```src/song_search.py``` script uses util functions defined in ```src/search_utils.py``` to find the 10 most similar words to a given search term. The similarity of words are based on cosine similarities of word embeddings calculated using the ```gensim``` package and the *"glove-wiki-gigaword-50"* model. The chosen search term and the 10 most similar words are then used in a word search to find matches with these words in the artist's songs. The script outputs a txt file containing the percentage amount of songs by the artist containing the search term and words related to it. 
 
 ### Data
-The project uses a dataset, *'Spotify Million Song Dataset_exported.csv'*, of 57,650 lyrics of songs from different artists. See more [here](https://www.kaggle.com/datasets/joebeachcapital/57651-spotify-songs).
+The project uses a dataset, *'Spotify Million Song Dataset_exported.csv'*, of 57,650 song lyrics from different artists. See more [here](https://www.kaggle.com/datasets/joebeachcapital/57651-spotify-songs).
 
 ### Usage
 
@@ -97,16 +97,16 @@ python3 src/song_search.py --artist <artist> --search_term <search_term>
 **Arguments:**
 
 - **Artist:** What artist to search for. Default: ABBA
-- **Search_term:** Search term to find related words to and search for in the song lyrics. Default: love
+- **Search_term:** Search term to find similar words to and search for in the song lyrics. Default: love
 
 ### Results
 
-An example of an output txt file can be found in ```out```. When searching for 'ABBA' and 'love', this is the result:
+Examples of output txt files can be found in ```out```. When searching for 'ABBA' and 'love', this is the result:
 
 ***94.0% of ABBA's songs contain words related to 'love'***
 
 ### Discussion
-In order to examine the results the code in this repository produce, I have used five common themes in popular music (as found in [this paper](https://journals.sagepub.com/doi/full/10.1177/0305735617748205)) as search terms for an expanded query search of ABBA's songs:
+In order to examine the results the code in this repository produce, I have used five common themes in popular music (as found in [this paper](https://journals.sagepub.com/doi/full/10.1177/0305735617748205)) as search terms for an expanded query search of a ABBA's songs:
 
 - 94.0% of ABBA's songs contain words related to 'love'
 
@@ -118,13 +118,13 @@ In order to examine the results the code in this repository produce, I have used
 
 - 2.0% of ABBA's songs contain words related to 'identity'
 
-These results display a crude way of examining themes in a corpus of text, here music lyrics. They indicate that most of ABBA's songs are about more happy, 'lighter' topics, such as love, desire, music and dancing, and less about more heavy topics such as 'identity', as there are not many words related to this topic. It is interesting to see that almost all of ABBA's songs contain words related to 'love', which appears, to some extend, to be a theme in most of ABBA's songs.
+These results display a crude way of examining themes in a corpus of text, here music lyrics. They indicate that most of ABBA's songs are about more happy, 'lighter' topics, such as love, desire, music and dancing, and less about more heavy topics such as identity, as there are not many words in their songs related to this topic. It is interesting to see that almost all of ABBA's songs contain words related to 'love', which must be a common theme in most of ABBA's songs.
 
 #### Limitations
-Using a method such as a query search with word embeddings will not take instances of polysemy, i.e., when a word has more than one meaning, into account. This is because the code calculates static word embeddings, which will not take the context of the other words present in that sentence into account, meaning that it won't be able to solve the ambiguity of polysemic words. This is of course not a problem with the chosen search terms presented above, but could become a problem if one were to use a polysemic word as a search term. 
+Using a method such as a query search with word embeddings will not take instances of polysemy, i.e., when a word has more than one meaning, into account. This is because the code uses static word embeddings, which will not take the context of the other words present in that sentence into account, meaning that it won't be able to solve the ambiguity of polysemic words. This is of course not a problem with the chosen search terms presented above, but could become a problem if one were to use a polysemic word as a search term. 
 
-In relation to that, it should be mentioned that the method presented in this project is a very crude way of assessing the contents of popular music songs. The analysis show if words related to a certain search term appears in a text, which means that only one word related to that search term needs to appear in a song for it to be counted as containing a word related to the search term. It is therefore not possible to assess the full extend to which the songs are about or related to the chosen search term. Therefore, a more sophisticated way of examining themes of popular music songs could be to perform topic modelling on the dataset instead. This could for example be done using the BERTopic model, which uses the BERT sentence transformer to create contextual embeddings of the input text, which are then subsequently used to form meaningful clusters. These clusters can then be interpreted by the common words appearing in them, which can then be interpreted as the prevalent topics in the corpus.
+In relation to that, it should be mentioned that the method presented in this project is a very crude way of assessing the contents of popular music songs. The analysis show if words related to a certain search term appears in a text, which means that only one word related to that search term needs to appear in a song once for a song to be counted as containing a word related to the search term. It is therefore not possible to assess the full extend to which the songs are about or related to the chosen search term. Therefore, a more sophisticated way of examining themes of popular music songs could be to perform topic modelling on the dataset instead. This could for example be done using the BERTopic model, which uses the BERT sentence transformer to create contextual embeddings of the input text, which are then subsequently used to form meaningful clusters. These clusters can then be interpreted by the common words appearing in them, which can then be interpreted as the prevalent topics in the corpus.
 
 ### A note on carbon emissions
-The measured CO2-eq emissions for this project was ..
-See [Assignment 5](https://github.com/louisebphansen/assignment-5-evaluating-environmental-impact-louisebphansen) for a further discussion of this. 
+
+CodeCarbon was used to measure the environmental impact of the code in this repository. The measured CO2-equivalent emissions for this project was 0.0001 Kg. See [Assignment 5](https://github.com/louisebphansen/assignment-5-evaluating-environmental-impact-louisebphansen) for a further discussion of this. 
